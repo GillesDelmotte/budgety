@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:100,300,400,600" rel="stylesheet" type="text/css">
+    <link href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="./style.css">
+    <title>budgety</title>
+</head>
+
+<body>
+    <div id="app">
+        <div>
+            <div class="top">
+                <div class="budget">
+                    <div class="budget__title">
+                        Available Budget in <span class="budget__title--month">{{getDate}}</span>:
+                    </div>
+
+                    <div class="budget__value">{{budgetDisplayed}}</div>
+
+                    <div class="budget__income clearfix">
+                        <div class="budget__income--text">Rentrées</div>
+                        <div class="right">
+                            <div class="budget__income--value">+ {{income}}</div>
+                            <div class="budget__income--percentage">&nbsp;</div>
+                        </div>
+                    </div>
+
+                    <div class="budget__expenses clearfix">
+                        <div class="budget__expenses--text">Dépenses</div>
+                        <div class="right clearfix">
+                            <div class="budget__expenses--value">- {{expenses}}</div>
+                            <div class="budget__expenses--percentage">{{percent(expenses)}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bottom">
+            <div class="add">
+                <div class="add__container">
+                    <select class="add__type" v-model="selected">
+                        <option value="inc">+</option>
+                        <option value="exp">-</option>
+                    </select>
+                    <input type="text" class="add__description" v-model="description" placeholder="Add description">
+                    <input type="number" min="0" class="add__value" placeholder="Value" v-model="number">
+                    <button class="add__btn" @click="add"><i class="ion-ios-checkmark-outline"></i></button>
+                </div>
+            </div>
+            <div class="container clearfix">
+                <div v-for="(toto, key, index) in budget" :class="key">
+                    <h2 :class="key +'__title'">{{key === 'income' ? 'Rentrées' : 'Dépenses'}}</h2>
+                    <div :class="key + '__list'">
+                        <div class="item clearfix" v-for="(tata, index) in toto" :id="key + '-' + index">
+                            <div class="item__description">{{tata['description']}}</div>
+                            <div class="right clearfix">
+                                <div class="item__value"> {{key === 'income' ? '+' : '-'}} {{tata['value']}}</div>
+                                <div class="item__percentage" v-if="key ==='expenses'">{{percent(tata['value'])}}</div>
+                                <div class="item__delete">
+                                    <button class="item__delete--btn" @click="deleteEntry(key, index)"><i
+                                            class="ion-ios-close-outline"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="./dist/main.js"></script>
+
+</html>
